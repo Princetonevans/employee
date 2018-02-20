@@ -1,6 +1,9 @@
 <template>
-<div id="edit-employee">
-<h3>Edit Employee</h3>
+ <div id="edit-employee">
+   <ul class="collection with-header">
+     <li class="collection-header"><h4>{{name}}</h4></li>
+     </ul>
+
 </div>
 </template>
 
@@ -31,6 +34,17 @@ beforeRouteEnter (to, from, next) {
 watch: {
   '$route': 'fetchData'
 },
-
+methods: {
+  fetchData () {
+    db.collection('employees').where('employee_id', '==', this.$route.params.emplyee_id).get().then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        this.employee_id = doc.data().employee_id
+        this.name = doc.data().name
+        this.dept = doc.data().dept
+        this.position = doc.data().position
+      })
+    })
+  }
+ }
 }
 </script>
